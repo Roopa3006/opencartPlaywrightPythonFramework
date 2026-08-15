@@ -2,6 +2,7 @@
 import time
 
 import pytest
+import re
 
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
@@ -32,3 +33,13 @@ def test_login_data_driven(page,testName,email,password,expected):
         expect(my_account_page.get_my_account_page_heading()).to_be_visible(timeout=3000)
     else:
         expect(login_page.get_login_error()).to_be_visible(timeout=3000)
+        
+        login_page.login(email, password)
+
+    if expected == "success":
+       expect(page).to_have_url(re.compile(r".*route=account/account"),timeout=10000)
+
+       expect(my_account_page.get_my_account_page_heading()).to_be_visible(timeout=10000)
+
+    elif expected == "failure":
+        expect( page.locator(".alert-danger")).to_be_visible(timeout=10000)
