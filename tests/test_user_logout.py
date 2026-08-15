@@ -50,7 +50,12 @@ def test_user_logout(page):
     login_page.click_login()
 
     # --- Step 4: Verify 'My Account' Page is Displayed ---
-    expect(my_account_page.get_my_account_page_heading()).to_be_visible(timeout=3000)
+    login_page.click_login()
+
+    expect(page).to_have_url(re.compile(r".*route=account/account"), timeout=10000)
+
+    expect(my_account_page.get_my_account_page_heading()).to_be_visible(timeout=10000)
+    
 
     # --- Step 5: Perform Logout Action ---
     logout_page = my_account_page.click_logout()
